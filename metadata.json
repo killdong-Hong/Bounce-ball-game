@@ -1,0 +1,6 @@
+{
+  "name": "Neon Cyberpunk Breaker",
+  "description": "A premium, high-performance HTML5 retro-neon cyberpunk themed brick breaker game featuring particles, power-ups, continuous tracking, and responsive adaptive audio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

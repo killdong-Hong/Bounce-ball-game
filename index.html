@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Neon Cyberpunk Breaker</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- Main Cyber Container -->
+    <div id="cyber-app">
+      
+      <!-- Top Neon Header / Decorative Bar -->
+      <div class="cyber-header" id="ui-header">
+        <div class="header-left">
+          <span class="pulse-dot"></span>
+          <span class="system-tag">SYSTEM ONLINE // LEVEL FEED</span>
+        </div>
+        <div class="header-right">
+          <button id="toggle-audio-btn" class="icon-btn" title="Toggle Sound">
+            <span class="speaker-icon">🔊</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Start Screen Overlay -->
+      <div id="screen-start" class="screen-overlay active">
+        <div class="cyber-logo-container">
+          <div class="cyber-logo-glitch" data-text="NEON">NEON</div>
+          <div class="cyber-logo-sub">CYBERPUNK BREAKER</div>
+        </div>
+        
+        <p class="cyber-tagline">20 LEVELS OF HIGH-OCTANE SYNTH BREAKOUT WAVE</p>
+
+        <div class="menu-actions">
+          <button id="btn-start" class="btn-cyber btn-primary">INITIALIZE MATRIX</button>
+          <button id="btn-settings" class="btn-cyber btn-secondary">CALIBRATION</button>
+        </div>
+
+        <div class="quick-controls-info">
+          <div><kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> : MOVE PADDLE</div>
+          <div><kbd>ESC</kbd> or <kbd>P</kbd> : PAUSE MATRIX</div>
+        </div>
+      </div>
+
+      <!-- Settings Panel Overlay -->
+      <div id="screen-settings" class="screen-overlay">
+        <h2 class="neon-title">CALIBRATION MENU</h2>
+        
+        <div class="settings-form">
+          <div class="setting-row">
+            <label for="slider-sfx">SOUND EFFECTS</label>
+            <input type="range" id="slider-sfx" min="0" max="100" value="70" class="cyber-slider" />
+            <span id="sfx-value" class="setting-val">70%</span>
+          </div>
+
+          <div class="setting-row">
+            <label for="slider-bgm">SYNTH BGM</label>
+            <input type="range" id="slider-bgm" min="0" max="100" value="50" class="cyber-slider" />
+            <span id="bgm-value" class="setting-val">50%</span>
+          </div>
+
+          <div class="setting-row">
+            <label for="select-colorblind">ACCESSIBILITY (COLOR MODES)</label>
+            <select id="select-colorblind" class="cyber-select">
+              <option value="none">Standard Neon</option>
+              <option value="protanopia">High Contrast Red-Blind</option>
+              <option value="deuteranopia">High Contrast Green-Blind</option>
+              <option value="tritanopia">High Contrast Blue-Blind</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="menu-actions" style="margin-top: 30px;">
+          <button id="btn-settings-back" class="btn-cyber btn-secondary">RETURN</button>
+        </div>
+      </div>
+
+      <!-- Pause Screen Overlay -->
+      <div id="screen-pause" class="screen-overlay">
+        <div class="glitch-text" data-text="MATRIX PAUSED">MATRIX PAUSED</div>
+        <p class="pause-tagline">TRANSMISSION SUSPENDED</p>
+        <div class="menu-actions">
+          <button id="btn-resume" class="btn-cyber btn-primary">RESUME MATRIX</button>
+          <button id="btn-quit" class="btn-cyber btn-secondary">ABORT RUN</button>
+        </div>
+      </div>
+
+      <!-- Game Over Overlay -->
+      <div id="screen-gameover" class="screen-overlay">
+        <h2 class="neon-title text-red">CORE DE-SYNCED</h2>
+        <p class="status-msg">GRID OVERFLOW: SYSTEM TERMINATED</p>
+        
+        <div class="stats-panel">
+          <div class="stat-item">
+            <span class="stat-label">FINAL SCORE</span>
+            <span id="go-score" class="stat-value neon-cyan">000,000</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">HIGHEST COMBO</span>
+            <span id="go-combo" class="stat-value neon-pink">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">MAX LEVEL</span>
+            <span id="go-level" class="stat-value neon-gold">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">HIGHEST SCORE</span>
+            <span id="go-highscore" class="stat-value neon-white">000,000</span>
+          </div>
+        </div>
+
+        <div class="menu-actions">
+          <button id="btn-retry" class="btn-cyber btn-primary">REDEPLOY CORE</button>
+          <button id="btn-gameover-main" class="btn-cyber btn-secondary">MAIN HUB</button>
+        </div>
+      </div>
+
+      <!-- Game Clear / Victory Overlay -->
+      <div id="screen-victory" class="screen-overlay">
+        <h2 class="neon-title text-green">SYNCHRONIZATION COMPLETE</h2>
+        <p class="status-msg text-green">CONGRATULATIONS: 20-LEVEL MATRIX CLEARED</p>
+
+        <div class="victory-decorations">
+          <div class="sub-decor">SYS_SECURE_100%</div>
+        </div>
+
+        <div class="stats-panel">
+          <div class="stat-item">
+            <span class="stat-label">TOTAL SCORE</span>
+            <span id="vic-score" class="stat-value neon-cyan">000,000</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">PEAK COMBO</span>
+            <span id="vic-combo" class="stat-value neon-pink">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">HIGHEST SCORE</span>
+            <span id="vic-highscore" class="stat-value neon-white">000,000</span>
+          </div>
+        </div>
+
+        <div class="menu-actions">
+          <button id="btn-victory-main" class="btn-cyber btn-primary">RETURN TO HUB</button>
+        </div>
+      </div>
+
+      <!-- Main Play Screen HUD -->
+      <div class="game-hud" id="hud">
+        <div class="hud-block">
+          <span class="hud-label">SCORE</span>
+          <span id="hud-score" class="hud-value neon-cyan-text">000,000</span>
+        </div>
+        <div class="hud-block">
+          <span class="hud-label">HIGH SCORE</span>
+          <span id="hud-highscore" class="hud-value neon-white-text">000,000</span>
+        </div>
+        <div class="hud-block">
+          <span class="hud-label">LEVEL</span>
+          <span id="hud-level" class="hud-value neon-gold-text">01/20</span>
+        </div>
+        <div class="hud-block">
+          <span class="hud-label">LIVES</span>
+          <div id="hud-lives-container" class="lives-indicator">
+            <!-- Rendered in JS -->
+          </div>
+        </div>
+        <div class="hud-block">
+          <span class="hud-label">COMBO</span>
+          <span id="hud-combo" class="hud-value neon-pink-text">0x</span>
+        </div>
+      </div>
+
+      <!-- Canvas Area Container (Centered & Adaptive) -->
+      <div id="canvas-container" class="canvas-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="mobile-control-overlay" class="mobile-overlay">
+          <span class="mobile-overlay-text">DRAG TO CONTROL MATRIX FLUX</span>
+        </div>
+      </div>
+
+      <!-- Active Buffs Indicator Bar -->
+      <div id="active-buffs" class="active-buffs-bar">
+        <!-- Rendered in JS dynamically -->
+      </div>
+
+      <!-- Adaptive AI Diagnostics Readout (Underlined style) -->
+      <div class="cyber-footer">
+        <div class="footer-left">
+          <span id="ai-mode" class="pulse-green">DYNAMICS: CALIBRATING...</span>
+        </div>
+        <div class="footer-right">
+          <span>COGNITIVE PROTECT: <span id="ai-protection">STANDBY</span></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ES Module Game Loading -->
+    <script type="module" src="/js/game.js"></script>
+  </body>
+</html>

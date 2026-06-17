@@ -1,0 +1,717 @@
+/* Cyberpunk Retro Neon Stylesheet - Immersive UI Theme */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700;800&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+  --bg-darker: #020202;
+  --bg-dark: #050505;
+  --bg-card: #0a0a0a;
+  --neon-cyan: #00f3ff;
+  --neon-pink: #ff00ff;
+  --neon-gold: #ffaa00;
+  --neon-green: #39ff14;
+  --neon-purple: #bd00ff;
+  --neon-blue: #0044ff;
+  --cyber-red: #ff3333;
+  --grid-color: rgba(0, 243, 255, 0.03);
+  --header-height: 40px;
+  --font-display: 'Share Tech Mono', 'JetBrains Mono', monospace;
+  --font-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+  --font-cyber: 'Rajdhani', sans-serif;
+}
+
+/* Base Body Setup */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: var(--bg-darker);
+  color: #00f3ff;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Colorblind Classes Overrides (Controlled via Select) */
+body.colorblind-protanopia {
+  --neon-cyan: #00d2ff;
+  --neon-pink: #e6a100;
+  --neon-gold: #ffffff;
+  --neon-green: #00a5e6;
+  --cyber-red: #ffff00;
+}
+
+body.colorblind-deuteranopia {
+  --neon-cyan: #efc400;
+  --neon-pink: #0087ff;
+  --neon-gold: #ffffff;
+  --neon-green: #00c3ff;
+  --cyber-red: #ff8800;
+}
+
+body.colorblind-tritanopia {
+  --neon-cyan: #ff0055;
+  --neon-pink: #00f0ff;
+  --neon-gold: #ffff00;
+  --neon-green: #ffffff;
+  --cyber-red: #ff4500;
+}
+
+/* Master Grid Structure */
+#cyber-app {
+  width: 1024px;
+  max-width: 1024px;
+  height: 768px;
+  max-height: 768px;
+  background-color: var(--bg-dark);
+  border: 8px solid #1a1a1a;
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* 3D Moving Perspective Background Effect representing Level */
+#cyber-app::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(rgba(5, 5, 5, 0.94), rgba(2, 2, 2, 0.98)),
+    radial-gradient(#1a1a1a 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Decorative CRT Scanline overlay at 10% opacity as requested */
+#cyber-app::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999;
+  background-size: 100% 4px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.10; /* Clean immersive visual scanner filtering */
+}
+
+/* Top Decorative Header */
+.cyber-header {
+  height: var(--header-height);
+  border-bottom: 2px solid #1a1a1a;
+  background: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--neon-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--neon-cyan);
+  animation: pulseGradual 2s infinite ease-in-out;
+}
+
+.system-tag {
+  color: #71717a; /* zinc-500 style grey */
+  text-transform: uppercase;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #71717a;
+  font-size: 14px;
+  transition: transform 0.2s ease, text-shadow 0.2s, color 0.2s;
+  padding: 4px;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* Screen Overlays (Start, Pause, Settings, Over, Victory) */
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 5, 0.96);
+  z-index: 20;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.screen-overlay.active {
+  display: flex;
+}
+
+/* Cyberpunk Logo Glitch */
+.cyber-logo-container {
+  margin-bottom: 30px;
+}
+
+.cyber-logo-glitch {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 800;
+  letter-spacing: 12px;
+  color: #fff;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px var(--neon-cyan),
+    0 0 35px var(--neon-cyan);
+  position: relative;
+  line-height: 1;
+}
+
+.cyber-logo-sub {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 8px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px var(--neon-pink);
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.cyber-tagline {
+  color: #52525b;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+/* Cyber Buttons */
+.menu-actions {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  z-index: 21;
+}
+
+.btn-cyber {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+  padding: 14px 34px;
+  cursor: pointer;
+  background: transparent;
+  position: relative;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px);
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+}
+
+.btn-primary:hover {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: 0 0 25px var(--neon-cyan);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  border: 1px solid var(--neon-pink);
+  color: var(--neon-pink);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.15);
+}
+
+.btn-secondary:hover {
+  background: var(--neon-pink);
+  color: #fff;
+  box-shadow: 0 0 25px var(--neon-pink);
+  transform: translateY(-2px);
+}
+
+/* Quick Controls layout */
+.quick-controls-info {
+  display: flex;
+  gap: 25px;
+  font-family: var(--font-mono);
+  color: #3f3f46;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+kbd {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  padding: 2px 6px;
+  color: #a1a1aa;
+  font-size: 10px;
+}
+
+/* Title colors */
+.neon-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: 4px;
+  margin-bottom: 24px;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(255,255,255,0.5);
+  text-transform: uppercase;
+}
+
+.text-red {
+  color: var(--cyber-red);
+  text-shadow: 0 0 15px var(--cyber-red);
+}
+
+.text-green {
+  color: var(--neon-green);
+  text-shadow: 0 0 15px var(--neon-green);
+}
+
+/* Settings elements */
+.settings-form {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: rgba(10, 10, 10, 0.8);
+  padding: 30px;
+  border-radius: 6px;
+  border: 1px solid #1a1a1a;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.setting-row label {
+  color: #71717a;
+}
+
+.setting-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--neon-cyan);
+  width: 50px;
+  text-align: right;
+}
+
+/* Slider CSS override */
+.cyber-slider {
+  -webkit-appearance: none;
+  width: 160px;
+  height: 6px;
+  background: #18181b;
+  outline: none;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.cyber-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* Select design */
+.cyber-select {
+  background: #09090b;
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 6px 12px;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Stats panel */
+.status-msg {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #71717a;
+  margin-bottom: 30px;
+}
+
+.stats-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+@media(max-width: 500px) {
+  .stats-panel {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.stat-item {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid #1a1a1a;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #52525b;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* HUD Top Layout conforming to Immersive UI specification */
+.game-hud {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 2px solid var(--neon-cyan);
+  background: #0a0a0a;
+  padding: 0 40px !important;
+  z-index: 10;
+  height: 80px;
+  min-height: 80px;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+}
+
+.hud-block {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px;
+}
+
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hud-value {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+/* Align and color HUD blocks precisely based on the requested design theme */
+.hud-block:nth-child(1) .hud-label { color: var(--neon-cyan); text-shadow: 0 0 4px rgba(0, 243, 255, 0.3); }
+.hud-block:nth-child(1) .hud-value { font-size: 26px; font-weight: 800; font-style: italic; color: #ffffff; }
+
+.hud-block:nth-child(2) .hud-label { color: var(--neon-pink); text-shadow: 0 0 4px rgba(255, 0, 255, 0.3); }
+.hud-block:nth-child(2) .hud-value { font-size: 18px; color: #ffffff; }
+
+.hud-block:nth-child(3) .hud-label { color: var(--neon-green); text-shadow: 0 0 4px rgba(57, 255, 20, 0.3); }
+.hud-block:nth-child(3) .hud-value { font-size: 22px; font-weight: 800; color: #ffffff; }
+
+.hud-block:nth-child(4) .hud-label { color: var(--neon-pink); text-shadow: 0 0 4px rgba(255, 0, 255, 0.3); margin-bottom: 4px; }
+
+.hud-block:nth-child(5) .hud-label { color: var(--neon-pink); text-shadow: 0 0 4px rgba(255, 0, 255, 0.3); }
+.hud-block:nth-child(5) .hud-value { font-size: 20px; color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink); }
+
+/* Neon Glow Specific Colors */
+.neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+.neon-pink { color: var(--neon-pink); text-shadow: 0 0 8px var(--neon-pink); }
+.neon-gold { color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold); }
+.neon-white { color: #fff; text-shadow: 0 0 8px #fff; }
+
+.neon-cyan-text { color: var(--neon-cyan); text-shadow: 0 0 6px rgba(0, 243, 255, 0.4); }
+.neon-pink-text { color: var(--neon-pink); text-shadow: 0 0 6px rgba(255, 0, 255, 0.4); }
+.neon-gold-text { color: var(--neon-gold); text-shadow: 0 0 6px rgba(255, 170, 0, 0.4); }
+.neon-white-text { color: #fff; text-shadow: 0 0 6px rgba(255, 255, 255, 0.3); }
+
+/* Retro Glowing Energy Blocks for lives indicator */
+.lives-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+}
+
+.life-heart {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: var(--neon-pink);
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--neon-pink);
+  text-indent: -9999px; /* hides the raw heartbeat character */
+  overflow: hidden;
+  margin: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.life-heart.lost {
+  background-color: transparent !important;
+  border: 1px solid var(--neon-pink) !important;
+  box-shadow: none !important;
+  opacity: 0.25;
+}
+
+/* Center Canvas Stage Container */
+.canvas-container {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  background-color: #080808;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Radial grid rendering matches design block */
+  background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Canvas element styled */
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Mobile Touch Overlay helper */
+.mobile-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s;
+  z-index: 15;
+}
+
+.mobile-overlay-text {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: rgba(0, 243, 255, 0.5);
+  border: 1px dashed rgba(0, 243, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+/* Buff Container */
+.active-buffs-bar {
+  height: 25px;
+  border-top: 1px solid #111111;
+  background: #050505;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 0 10px;
+  z-index: 10;
+}
+
+.buff-token {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+
+.buff-token-laser {
+  border-color: var(--neon-gold);
+  color: var(--neon-gold);
+  background: rgba(255, 170, 0, 0.08);
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
+}
+
+.buff-token-shield {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+  background: rgba(255, 0, 127, 0.08);
+  box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+}
+
+.buff-token-catch {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.08);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.buff-timer {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+/* Footer Style: Matching Immersive Bottom Status layout */
+.cyber-footer {
+  height: 48px;
+  border-top: 1px solid #121212;
+  background: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 10;
+  font-family: var(--font-mono);
+  color: #52525b; /* zinc-500 equivalent */
+  letter-spacing: 1.5px;
+}
+
+.cyber-footer span, .cyber-footer div {
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.pulse-green {
+  color: var(--neon-green) !important;
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+}
+
+/* Animations */
+@keyframes pulseGradual {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes heartFlutter {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1.05); }
+}
+
+/* Glitch effects */
+.glitch-text {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+  position: relative;
+  text-transform: uppercase;
+}
+
+/* Adaptive Scaling specifically supporting preview bounds & tablets */
+@media (max-width: 1024px) or (max-height: 768px) {
+  #cyber-app {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+@media(max-width: 768px) {
+  .game-hud {
+    padding: 0 16px !important;
+    height: 64px;
+    min-height: 64px;
+  }
+  .hud-value {
+    font-size: 14px !important;
+  }
+  .hud-block:nth-child(1) .hud-value {
+    font-size: 16px !important;
+  }
+  .hud-block:nth-child(3) .hud-value {
+    font-size: 15px !important;
+  }
+  .cyber-logo-glitch {
+    font-size: 44px;
+    letter-spacing: 6px;
+  }
+  .menu-actions {
+    flex-direction: column;
+    width: 60%;
+    gap: 12px;
+  }
+  .btn-cyber {
+    padding: 10px 16px;
+    font-size: 11px;
+  }
+  .quick-controls-info {
+    display: none;
+  }
+}
